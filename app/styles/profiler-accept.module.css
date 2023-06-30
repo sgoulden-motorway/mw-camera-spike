@@ -1,0 +1,35 @@
+.profilerAccept {
+  display: flex;
+  flex-direction: column;
+  background: #fef200;
+  position: relative;
+  padding: 24px;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+}
+
+.profilerAccept h2 {
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 600;
+}
+
+.scannerContainer {
+  height: 100%;
+  width: 100%;
+}
+
+.viewFinder {
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 50px solid transparent;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  background: linear-gradient(#00bc80, #00bc80) top left, linear-gradient(#00bc80, #00bc80) top left, linear-gradient(#00bc80, #00bc80) top right, linear-gradient(#00bc80, #00bc80) top right, linear-gradient(#00bc80, #00bc80) bottom left, linear-gradient(#00bc80, #00bc80) bottom left, linear-gradient(#00bc80, #00bc80) bottom right, linear-gradient(#00bc80, #00bc80) bottom right;
+  background-size: 2px 20px, 20px 2px;
+  background-repeat: no-repeat;
+}

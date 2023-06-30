@@ -1,0 +1,4 @@
+-- CreateTable
+CREATE TABLE "Profiler" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
+);
