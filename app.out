@@ -4,30 +4,176 @@
 
 🔶 Mock server running
 💿 Building...
-💿 Rebuilt in 879ms
+💿 Rebuilt in 1.2s
 Remix App Server started at http://localhost:3000 (http://192.168.0.49:3000)
 null
-GET /profiler/accept 200 - - 100.177 ms
+GET /profiler/accept 200 - - 582.310 ms
+fs
+<Buffer 89 50 4e 47 0d 0a 1a 0a 00 00 00 0d 49 48 44 52 00 00 02 80 00 00 01 e0 08 06 00 00 00 35 d1 dc e4 00 00 00 01 73 52 47 42 00 ae ce 1c e9 00 00 20 00 ... 312594 more bytes>
+Image public/img-sam.png saved to bucket images-doc-recognition
+POST /profiler/accept?_data=routes%2Fprofiler.accept 204 - - 1075.947 ms
+File saved.
 💿 File changed: app/routes/profiler.accept.tsx
 💿 Rebuilding...
-💿 Rebuilt in 553ms
+💿 Rebuilt in 437ms
 null
-GET /profiler/accept 200 - - 14.525 ms
+GET /profiler/accept 200 - - 11.710 ms
+💿 File changed: app/routes/profiler.accept.tsx
+💿 Rebuilding...
+💿 Rebuilt in 371ms
+null
+GET /profiler/accept 200 - - 4.434 ms
+fs
+<Buffer 89 50 4e 47 0d 0a 1a 0a 00 00 00 0d 49 48 44 52 00 00 02 80 00 00 01 e0 08 06 00 00 00 35 d1 dc e4 00 00 00 01 73 52 47 42 00 ae ce 1c e9 00 00 20 00 ... 324648 more bytes>
+GET /profiler/img-sam.png 404 - - 71.223 ms
+GET /profiler/img-sam.png 404 - - 2.928 ms
+Image public/img-sam.png saved to bucket images-doc-recognition
+POST /profiler/accept?_data=routes%2Fprofiler.accept 204 - - 965.412 ms
+File saved.
+💿 File changed: app/routes/profiler.accept.tsx
+💿 Rebuilding...
+💿 Rebuilt in 1s
+null
+GET /profiler/accept 200 - - 9.339 ms
+💿 File changed: app/routes/profiler.accept.tsx
+💿 Rebuilding...
+💿 Rebuilt in 575ms
+null
+GET /profiler/accept 500 - - 19.338 ms
 💿 File changed: app/routes/profiler.accept.tsx
 💿 Rebuilding...
 💿 File changed: app/routes/profiler.accept.tsx
-💿 Rebuilt in 589ms
-null
-GET /profiler/accept 200 - - 5.318 ms
+💿 Rebuilt in 179ms
 💿 Rebuilding...
-GET /build/routes/profiler.accept-TJCGT6CR.js.map 404 - - 59.084 ms
-💿 Rebuilt in 511ms
+💿 Rebuilt in 398ms
+💿 File changed: app/routes/profiler.accept.tsx
+💿 Rebuilding...
+💿 Rebuilt in 359ms
+💿 File changed: app/routes/profiler.accept.tsx
+💿 Rebuilding...
+💿 Rebuilt in 471ms
+💿 File changed: app/routes/profiler.accept.tsx
+💿 Rebuilding...
+💿 Rebuilt in 375ms
+💿 File changed: app/routes/profiler.accept.tsx
+💿 Rebuilding...
+💿 Rebuilt in 413ms
+💿 File changed: app/routes/profiler.accept.tsx
+💿 Rebuilding...
+💿 Rebuilt in 453ms
 null
-GET /profiler/accept 200 - - 3.983 ms
+GET /profiler/accept 200 - - 25.753 ms
+💿 File changed: app/routes/profiler.accept.tsx
+💿 Rebuilding...
+💿 Rebuilt in 372ms
+null
+GET /profiler/accept 200 - - 3.806 ms
+💿 File changed: app/routes/profiler.accept.tsx
+💿 Rebuilding...
+💿 Rebuilt in 355ms
+null
+GET /profiler/accept 200 - - 3.980 ms
+💿 File changed: app/routes/profiler.accept.tsx
+💿 Rebuilding...
+💿 Rebuilt in 375ms
+null
+GET /profiler/accept 200 - - 3.772 ms
+💿 File changed: app/routes/profiler.accept.tsx
+💿 Rebuilding...
+💿 Rebuilt in 452ms
+null
+GET /profiler/accept 200 - - 8.531 ms
+💿 File changed: app/routes/profiler.accept.tsx
+💿 Rebuilding...
+💿 Rebuilt in 514ms
+null
+GET /profiler/accept 200 - - 7.378 ms
+💿 File changed: app/routes/profiler.accept.tsx
+💿 Rebuilding...
+💿 Rebuilt in 357ms
+null
+GET /profiler/accept 200 - - 3.707 ms
+💿 File changed: app/routes/profiler.accept.tsx
+💿 Rebuilding...
+💿 Rebuilt in 93ms
+null
+GET /profiler/accept 200 - - 3.141 ms
+💿 File changed: app/routes/profiler.accept.tsx
+💿 Rebuilding...
+💿 Rebuilt in 359ms
+null
+GET /profiler/accept 200 - - 4.092 ms
+💿 File changed: app/routes/profiler.accept.tsx
+💿 Rebuilding...
+💿 Rebuilt in 415ms
+null
+GET /profiler/accept 200 - - 3.805 ms
+💿 File changed: app/routes/profiler.accept.tsx
+💿 Rebuilding...
+💿 Rebuilt in 414ms
+null
+GET /profiler/accept 200 - - 4.549 ms
+null
+GET /profiler/accept 200 - - 9.810 ms
+💿 File changed: app/routes/profiler.accept.tsx
+💿 Rebuilding...
+💿 Rebuilt in 452ms
+null
+GET /profiler/accept 200 - - 5.665 ms
+💿 File changed: app/routes/profiler.accept.tsx
+💿 Rebuilding...
+💿 Rebuilt in 345ms
+null
+GET /profiler/accept 200 - - 3.778 ms
 💿 File changed: app/routes/profiler.accept.tsx
 💿 Rebuilding...
 💿 Rebuilt in 418ms
 null
-GET /profiler/accept 200 - - 4.120 ms
+GET /profiler/accept 200 - - 4.745 ms
+💿 File changed: app/routes/profiler.accept.tsx
+💿 Rebuilding...
+💿 Rebuilt in 459ms
 null
-GET /profiler/accept 200 - - 8.704 ms
+GET /profiler/accept 200 - - 4.566 ms
+💿 File changed: app/routes/profiler.accept.tsx
+💿 Rebuilding...
+💿 Rebuilt in 100ms
+null
+GET /profiler/accept 200 - - 7.608 ms
+💿 File changed: app/routes/profiler.accept.tsx
+💿 Rebuilding...
+💿 Rebuilt in 156ms
+null
+GET /profiler/accept 200 - - 5.342 ms
+💿 File changed: app/routes/profiler.accept.tsx
+💿 Rebuilding...
+💿 Rebuilt in 152ms
+null
+GET /profiler/accept 200 - - 5.518 ms
+💿 File changed: app/routes/profiler.accept.tsx
+💿 Rebuilding...
+💿 Rebuilt in 95ms
+null
+GET /profiler/accept 200 - - 3.344 ms
+💿 File changed: app/routes/profiler.accept.tsx
+💿 Rebuilding...
+💿 Rebuilt in 151ms
+null
+GET /profiler/accept 200 - - 13.720 ms
+💿 File changed: app/routes/profiler.accept.tsx
+💿 Rebuilding...
+💿 Rebuilt in 160ms
+null
+GET /profiler/accept 200 - - 9.673 ms
+GET /build/routes/profiler.accept-ACIEJ6VH.js.map 404 - - 17.056 ms
+💿 File changed: app/routes/profiler.accept.tsx
+💿 Rebuilding...
+💿 Rebuilt in 122ms
+null
+GET /profiler/accept 200 - - 4.197 ms
+GET /build/routes/profiler.accept-ACIEJ6VH.js.map 404 - - 4.771 ms
+💿 File changed: app/routes/profiler.accept.tsx
+💿 Rebuilding...
+💿 Rebuilt in 525ms
+null
+GET /profiler/accept 200 - - 4.211 ms

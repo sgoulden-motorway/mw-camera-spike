@@ -48,7 +48,7 @@ export async function action({ request }: LoaderArgs) {
   return redirect(`/profiler/accept`);
 }
 
-const cameraViewfinderClasses = "relative h-[500px]";
+const cameraViewfinderClasses = "relative h-[500px] flex";
 
 const cameraViewfinderVideoClasses = "absolute top-0 left-0";
 
@@ -60,6 +60,7 @@ const CameraViewfinder = () => {
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [fallback, setFallback] = useState(false);
+  const [extractedText, setExtractedText] = useState("");
 
   const fetcher = useFetcher();
   console.log(capturedImage);
@@ -70,7 +71,7 @@ const CameraViewfinder = () => {
     }
 
     navigator.mediaDevices
-      .getUserMedia({ video: true, facingMode: "environment" })
+      .getUserMedia({ video: { facingMode: "environment" } })
       .then((stream) => {
         const viewfinderElement = viewfinderRef.current;
 
@@ -79,6 +80,14 @@ const CameraViewfinder = () => {
       .catch((error) => {
         console.error("Error accessing camera:", error);
       });
+  }, []);
+
+  // add a set timeout in a useeffect to call extract text every 2 seconds
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      captureImage();
+    }, 2000);
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -102,6 +111,7 @@ const CameraViewfinder = () => {
   }, []);
 
   const captureImage = async () => {
+    console.log("capturing image");
     const viewfinderElement = viewfinderRef.current;
 
     // Create a canvas element
@@ -116,34 +126,38 @@ const CameraViewfinder = () => {
     // Convert the canvas image to a data URL
     const dataUrl = canvas.toDataURL("image/png");
 
+    setCapturedImage(dataUrl);
+
     const fileNameWithDate = `public/img-sam.png`;
-    try {
-      setLoading(true);
-      const imageUrl = await fetcher.submit(
-        { imageData: dataUrl, fileName: fileNameWithDate },
-        { method: "post" }
-      );
+    const text = await extractText(dataUrl);
+    setExtractedText(text);
+    // try {
+    //   setLoading(true);
+    //   const imageUrl = await fetcher.submit(
+    //     { imageData: dataUrl, fileName: fileNameWithDate },
+    //     { method: "post" }
+    //   );
 
-      setCapturedImage("img-sam.png");
+    //   setCapturedImage("img-sam.png");
 
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
-    }
+    //   setLoading(false);
+    // } catch (error) {
+    //   console.log(error);
+    //   setLoading(false);
+    // }
   };
 
   const imageRef = useRef(null);
 
-  const extractText = async () => {
+  const extractText = async (dataUrl: string) => {
     const imageElement = imageRef.current;
 
     // Load the image and perform OCR
     const {
       data: { text },
-    } = await Tesseract.recognize("/img-sam.png");
+    } = await Tesseract.recognize(dataUrl);
 
-    console.log("Extracted text:", text);
+    return text;
   };
 
   const reloadSrc = (e) => {
@@ -185,19 +199,23 @@ const CameraViewfinder = () => {
               strokeWidth="2"
             />
           </svg>
+          {/* {capturedImage && (
+            <img
+              className="camera-viewfinder__image"
+              src={capturedImage}
+              alt="Captured"
+              onError={reloadSrc}
+            />
+          )} */}
         </div>
-        <div className="flex flex-col justify-center">
-          <img
-            className="camera-viewfinder__image"
-            src={"/img-sam.png"}
-            alt="Captured"
-            onError={reloadSrc}
-          />
-
+        <div>
           <button className="camera-viewfinder__button" onClick={captureImage}>
             Capture
           </button>
           <button onClick={extractText}>Extract Name</button>
+        </div>
+        <div className="flex justify-center">
+          <span>{extractedText}</span>
         </div>
       </>
     </>
