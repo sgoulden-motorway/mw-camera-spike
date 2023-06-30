@@ -198,10 +198,10 @@ const CameraViewfinder = () => {
             className={cameraViewfinderOverlayClasses}
           >
             <rect
-              x="10%"
+              x="5%"
               y="10%"
-              width="85%"
-              height="85%"
+              width="90%"
+              height="80%"
               rx="10"
               ry="10"
               fill="none"
