@@ -85,12 +85,12 @@ const CameraViewfinder = () => {
   }, []);
 
   // add a set timeout in a useeffect to call extract text every 2 seconds
-  useEffect(() => {
-    const interval = setInterval(async () => {
-      captureImage();
-    }, 2000);
-    return () => clearInterval(interval);
-  }, []);
+  // useEffect(() => {
+  //   const interval = setInterval(async () => {
+  //     captureImage();
+  //   }, 2000);
+  //   return () => clearInterval(interval);
+  // }, []);
 
   useEffect(() => {
     const viewfinderElement = viewfinderRef.current;
