@@ -70,7 +70,7 @@ const CameraViewfinder = () => {
     }
 
     navigator.mediaDevices
-      .getUserMedia({ video: true, facingMode: "user" })
+      .getUserMedia({ video: true, facingMode: "environment" })
       .then((stream) => {
         const viewfinderElement = viewfinderRef.current;
 
@@ -163,8 +163,8 @@ const CameraViewfinder = () => {
           <video
             ref={viewfinderRef}
             className={cameraViewfinderVideoClasses}
-            autoplay
-            playsinline
+            autoPlay
+            playsInline
             muted
           />
           <svg

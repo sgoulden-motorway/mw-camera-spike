@@ -4,7 +4,30 @@
 
 🔶 Mock server running
 💿 Building...
-💿 Rebuilt in 1.3s
+💿 Rebuilt in 879ms
 Remix App Server started at http://localhost:3000 (http://192.168.0.49:3000)
 null
-GET /profiler/accept 200 - - 147.100 ms
+GET /profiler/accept 200 - - 100.177 ms
+💿 File changed: app/routes/profiler.accept.tsx
+💿 Rebuilding...
+💿 Rebuilt in 553ms
+null
+GET /profiler/accept 200 - - 14.525 ms
+💿 File changed: app/routes/profiler.accept.tsx
+💿 Rebuilding...
+💿 File changed: app/routes/profiler.accept.tsx
+💿 Rebuilt in 589ms
+null
+GET /profiler/accept 200 - - 5.318 ms
+💿 Rebuilding...
+GET /build/routes/profiler.accept-TJCGT6CR.js.map 404 - - 59.084 ms
+💿 Rebuilt in 511ms
+null
+GET /profiler/accept 200 - - 3.983 ms
+💿 File changed: app/routes/profiler.accept.tsx
+💿 Rebuilding...
+💿 Rebuilt in 418ms
+null
+GET /profiler/accept 200 - - 4.120 ms
+null
+GET /profiler/accept 200 - - 8.704 ms
