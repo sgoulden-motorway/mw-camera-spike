@@ -131,8 +131,8 @@ const CameraViewfinder = () => {
     setCapturedImage(dataUrl);
 
     const fileNameWithDate = `test/img-${Date.now()}.png`;
-    const text = await extractText(dataUrl);
-    setExtractedText(text);
+    // const text = await extractText(dataUrl);
+    // setExtractedText(text);
     if (show) {
       setVisibleImage(dataUrl);
       try {
