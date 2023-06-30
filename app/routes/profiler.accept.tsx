@@ -209,7 +209,7 @@ const CameraViewfinder = () => {
         <div className="flex flex-col justify-around">
           {/* create a nice button using tailwind that calls onClick={() => captureImage(true)} */}
           <button
-            className="mt-8 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
+            className="fixed bottom-0 mt-8 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
             onClick={() => captureImage(true)}
           >
             Capture
