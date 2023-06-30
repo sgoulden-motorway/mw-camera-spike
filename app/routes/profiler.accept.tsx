@@ -194,10 +194,10 @@ const CameraViewfinder = () => {
             className={cameraViewfinderOverlayClasses}
           >
             <rect
-              x="20%"
+              x="10%"
               y="10%"
-              width="60%"
-              height="80%"
+              width="85%"
+              height="85%"
               rx="10"
               ry="10"
               fill="none"
@@ -209,7 +209,7 @@ const CameraViewfinder = () => {
         <div className="flex flex-col justify-around">
           {/* create a nice button using tailwind that calls onClick={() => captureImage(true)} */}
           <button
-            className="fixed bottom-0 mt-8 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
+            className="z-100 fixed bottom-0 mt-8 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
             onClick={() => captureImage(true)}
           >
             Capture
