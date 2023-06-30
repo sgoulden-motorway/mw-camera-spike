@@ -209,8 +209,9 @@ const CameraViewfinder = () => {
           </svg>
         </div>
         <div className="flex flex-col justify-around">
+          {/* create a nice button using tailwind that calls onClick={() => captureImage(true)} */}
           <button
-            className="camera-viewfinder__button"
+            className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
             onClick={() => captureImage(true)}
           >
             Capture
