@@ -10,11 +10,9 @@ import {
 } from "@remix-run/react";
 
 import stylesheet from "~/tailwind.css";
-import thcStylesheet from "~/thc/style.css";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
-  { rel: "stylesheet", href: thcStylesheet },
   ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
 ];
 
