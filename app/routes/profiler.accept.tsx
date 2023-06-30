@@ -135,18 +135,18 @@ const CameraViewfinder = () => {
     // setExtractedText(text);
     if (show) {
       setVisibleImage(dataUrl);
-      try {
-        setLoading(true);
-        const imageUrl = await fetcher.submit(
-          { imageData: dataUrl, fileName: fileNameWithDate },
-          { method: "post" }
-        );
+      // try {
+      //   setLoading(true);
+      //   const imageUrl = await fetcher.submit(
+      //     { imageData: dataUrl, fileName: fileNameWithDate },
+      //     { method: "post" }
+      //   );
 
-        setLoading(false);
-      } catch (error) {
-        console.log(error);
-        setLoading(false);
-      }
+      //   setLoading(false);
+      // } catch (error) {
+      //   console.log(error);
+      //   setLoading(false);
+      // }
     }
   };
 
