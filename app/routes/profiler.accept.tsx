@@ -58,9 +58,11 @@ const CameraViewfinder = () => {
   const viewfinderRef = useRef(null);
   const overlayRef = useRef(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [visibleImage, setVisibleImage] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
   const [fallback, setFallback] = useState(false);
   const [extractedText, setExtractedText] = useState("");
+  const resizeOverlayRef = useRef(null);
 
   const fetcher = useFetcher();
   console.log(capturedImage);
@@ -100,8 +102,8 @@ const CameraViewfinder = () => {
       overlayElement.setAttribute("height", viewfinderElement.offsetHeight);
     };
 
-    // Call the resizeOverlay function initially and on window resize
     resizeOverlay();
+    resizeOverlayRef.current = resizeOverlay;
     window.addEventListener("resize", resizeOverlay);
 
     return () => {
@@ -110,7 +112,7 @@ const CameraViewfinder = () => {
     };
   }, []);
 
-  const captureImage = async () => {
+  const captureImage = async (show: boolean) => {
     console.log("capturing image");
     const viewfinderElement = viewfinderRef.current;
 
@@ -127,6 +129,9 @@ const CameraViewfinder = () => {
     const dataUrl = canvas.toDataURL("image/png");
 
     setCapturedImage(dataUrl);
+    if (show) {
+      setVisibleImage(dataUrl);
+    }
 
     const fileNameWithDate = `public/img-sam.png`;
     const text = await extractText(dataUrl);
@@ -180,10 +185,13 @@ const CameraViewfinder = () => {
             autoPlay
             playsInline
             muted
+            onLoadedMetadata={() => {
+              resizeOverlayRef.current();
+            }}
           />
           <svg
-            width="200"
-            height="100"
+            width="0"
+            height="0"
             ref={overlayRef}
             className={cameraViewfinderOverlayClasses}
           >
@@ -199,24 +207,26 @@ const CameraViewfinder = () => {
               strokeWidth="2"
             />
           </svg>
-          {/* {capturedImage && (
-            <img
-              className="camera-viewfinder__image"
-              src={capturedImage}
-              alt="Captured"
-              onError={reloadSrc}
-            />
-          )} */}
         </div>
-        <div>
-          <button className="camera-viewfinder__button" onClick={captureImage}>
+        <div className="flex flex-col justify-around">
+          <button
+            className="camera-viewfinder__button"
+            onClick={() => captureImage(true)}
+          >
             Capture
           </button>
-          <button onClick={extractText}>Extract Name</button>
         </div>
         <div className="flex justify-center">
           <span>{extractedText}</span>
         </div>
+        {visibleImage && (
+          <img
+            className="camera-viewfinder__image"
+            src={visibleImage}
+            alt="Captured"
+            onError={reloadSrc}
+          />
+        )}
       </>
     </>
   );
