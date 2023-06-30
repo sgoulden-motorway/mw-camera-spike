@@ -30,11 +30,6 @@ export async function action({ request }: LoaderArgs) {
       resumable: false,
     });
 
-    fs.writeFile(fileName, imageBuffer, "binary", function (err) {
-      if (err) throw err;
-      console.log("File saved.");
-    });
-
     console.log(`Image ${fileName} saved to bucket ${bucketName}`);
   };
   const formData = await request.formData();
@@ -43,7 +38,6 @@ export async function action({ request }: LoaderArgs) {
 
   await saveImageToBucket(imageData, fileName);
   // get the file from the bucket
-  const file = await bucket.file(fileName);
   // get the url of the image in the bucket
   return redirect(`/profiler/accept`);
 }
@@ -73,7 +67,13 @@ const CameraViewfinder = () => {
     }
 
     navigator.mediaDevices
-      .getUserMedia({ video: { facingMode: "environment" } })
+      .getUserMedia({
+        video: {
+          width: { ideal: 1920 },
+          height: { ideal: 1080 },
+          facingMode: "environment",
+        },
+      })
       .then((stream) => {
         const viewfinderElement = viewfinderRef.current;
 
@@ -129,27 +129,25 @@ const CameraViewfinder = () => {
     const dataUrl = canvas.toDataURL("image/png");
 
     setCapturedImage(dataUrl);
-    if (show) {
-      setVisibleImage(dataUrl);
-    }
 
-    const fileNameWithDate = `public/img-sam.png`;
+    const fileNameWithDate = `test/img-${Date.now()}.png`;
     const text = await extractText(dataUrl);
     setExtractedText(text);
-    // try {
-    //   setLoading(true);
-    //   const imageUrl = await fetcher.submit(
-    //     { imageData: dataUrl, fileName: fileNameWithDate },
-    //     { method: "post" }
-    //   );
+    if (show) {
+      setVisibleImage(dataUrl);
+      try {
+        setLoading(true);
+        const imageUrl = await fetcher.submit(
+          { imageData: dataUrl, fileName: fileNameWithDate },
+          { method: "post" }
+        );
 
-    //   setCapturedImage("img-sam.png");
-
-    //   setLoading(false);
-    // } catch (error) {
-    //   console.log(error);
-    //   setLoading(false);
-    // }
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+      }
+    }
   };
 
   const imageRef = useRef(null);
@@ -211,7 +209,7 @@ const CameraViewfinder = () => {
         <div className="flex flex-col justify-around">
           {/* create a nice button using tailwind that calls onClick={() => captureImage(true)} */}
           <button
-            className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
+            className="mt-8 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
             onClick={() => captureImage(true)}
           >
             Capture
