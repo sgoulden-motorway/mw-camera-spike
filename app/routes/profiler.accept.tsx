@@ -163,7 +163,9 @@ const CameraViewfinder = () => {
           <video
             ref={viewfinderRef}
             className={cameraViewfinderVideoClasses}
-            autoPlay
+            autoplay
+            playsinline
+            muted
           />
           <svg
             width="200"
