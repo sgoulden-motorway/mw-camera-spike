@@ -175,62 +175,80 @@ const CameraViewfinder = () => {
 
   return (
     <>
-      <>
-        <div className={cameraViewfinderClasses}>
-          <video
-            ref={viewfinderRef}
-            className={cameraViewfinderVideoClasses}
-            autoPlay
-            playsInline
-            muted
-            onLoadedMetadata={() => {
-              resizeOverlayRef.current();
-            }}
+      <div className={cameraViewfinderClasses}>
+        <video
+          ref={viewfinderRef}
+          className={cameraViewfinderVideoClasses}
+          autoPlay
+          playsInline
+          muted
+          onLoadedMetadata={() => {
+            resizeOverlayRef.current();
+          }}
+        />
+        {/* add some nice big text stating the extractedText with a highlighted background */}
+        {extractedText && (
+          <span className="z-10 text-2xl">{extractedText}</span>
+        )}
+        <svg
+          width="0"
+          height="0"
+          ref={overlayRef}
+          className={cameraViewfinderOverlayClasses}
+        >
+          <rect
+            x="5%"
+            y="10%"
+            width="90%"
+            height="80%"
+            rx="10"
+            ry="10"
+            fill="none"
+            stroke="blue"
+            strokeWidth="2"
           />
-          {/* add some nice big text stating the extractedText with a highlighted background */}
-          {extractedText && (
-            <span className="z-10 text-2xl">{extractedText}</span>
-          )}
-          <svg
-            width="0"
-            height="0"
-            ref={overlayRef}
-            className={cameraViewfinderOverlayClasses}
-          >
-            <rect
-              x="5%"
-              y="10%"
-              width="90%"
-              height="80%"
-              rx="10"
-              ry="10"
-              fill="none"
-              stroke="blue"
-              strokeWidth="2"
-            />
-          </svg>
-        </div>
-        <div className="flex flex-col justify-around">
-          {/* create a nice button using tailwind that calls onClick={() => captureImage(true)} */}
+        </svg>
+      </div>
+
+      <div className="flex flex-col justify-around">
+        {/* create a nice button using tailwind that calls onClick={() => captureImage(true)} */}
+        {!visibleImage && (
           <button
             className="fixed bottom-0 z-50 mt-8 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
             onClick={() => captureImage(true)}
           >
             Capture
           </button>
-        </div>
-        <div className="flex justify-center">
-          <span>{extractedText}</span>
-        </div>
-        {visibleImage && (
-          <img
-            className="camera-viewfinder__image"
-            src={visibleImage}
-            alt="Captured"
-            onError={reloadSrc}
-          />
         )}
-      </>
+      </div>
+
+      <div className="flex justify-center">
+        <span>{extractedText}</span>
+      </div>
+
+      {visibleImage && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="m-4 w-full rounded-lg bg-white p-8 sm:m-8 sm:w-auto sm:p-16">
+            <img
+              className="camera-viewfinder__image mb-8"
+              src={visibleImage}
+              alt="Captured"
+              onError={reloadSrc}
+            />
+            <div className="flex justify-between">
+              <button
+                className="rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700"
+                onClick={() => setVisibleImage(null)}
+              >
+                Close
+              </button>
+              <button className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
+                Accept
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

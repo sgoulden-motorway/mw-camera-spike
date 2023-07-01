@@ -4,7 +4,12 @@
 
 🔶 Mock server running
 💿 Building...
-💿 Rebuilt in 871ms
+💿 Rebuilt in 896ms
 Remix App Server started at http://localhost:3000 (http://192.168.0.49:3000)
 null
-GET /profiler/accept 200 - - 91.910 ms
+GET /profiler/accept 200 - - 113.861 ms
+💿 File changed: app/routes/profiler.accept.tsx
+💿 Rebuilding...
+💿 Rebuilt in 599ms
+null
+GET /profiler/accept 200 - - 5.334 ms
