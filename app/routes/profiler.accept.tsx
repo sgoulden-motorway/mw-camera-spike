@@ -176,7 +176,7 @@ const CameraViewfinder = () => {
               alt="Captured"
             />
             {showExtractedText && (
-              <div className="absolute left-0 top-0 bg-white">
+              <div className="absolute left-0 top-0 bg-white text-xs">
                 <span>{extractedText}</span>
               </div>
             )}
