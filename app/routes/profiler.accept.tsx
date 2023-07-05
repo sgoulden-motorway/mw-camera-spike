@@ -182,10 +182,6 @@ const CameraViewfinder = () => {
                   <span>{extractedText}</span>
                 </div>
               )}
-              <p className="text-md">
-                Check the image quality - does it look blurry? If so please
-                press close and take another photo
-              </p>
             </div>
             <div className="flex justify-between">
               <button
