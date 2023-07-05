@@ -168,8 +168,8 @@ const CameraViewfinder = () => {
       </div>
 
       {visibleImage && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="relative m-4 w-full overflow-y-auto rounded-lg bg-white p-8 sm:m-8 sm:w-auto sm:p-16">
+        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto">
+          <div className="relative m-4 w-full rounded-lg bg-white p-8 sm:m-8 sm:w-auto sm:p-16">
             <img
               className="camera-viewfinder__image mb-8"
               src={visibleImage}
