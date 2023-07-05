@@ -1,9 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
-import Tesseract from "tesseract.js";
 import { LoaderArgs, json, redirect } from "@remix-run/node";
 import { useFetcher } from "@remix-run/react";
-import fs from "fs";
 const bucketName = "images-doc-recognition";
 
 export async function action({ request }: LoaderArgs) {
@@ -23,14 +21,10 @@ export async function action({ request }: LoaderArgs) {
     const base64EncodedImageString = imageData.split(",")[1];
     const imageBuffer = Buffer.from(base64EncodedImageString, "base64");
 
-    console.log(imageBuffer);
-
     await file.save(imageBuffer, {
       contentType: "image/png", // Set the appropriate content type for your image
       resumable: false,
     });
-
-    console.log(`Image ${fileName} saved to bucket ${bucketName}`);
   };
   const formData = await request.formData();
   const imageData = formData.get("imageData");
@@ -42,24 +36,14 @@ export async function action({ request }: LoaderArgs) {
   return redirect(`/profiler/accept`);
 }
 
-const cameraViewfinderClasses = "relative h-[500px] flex";
-
-const cameraViewfinderVideoClasses = "absolute top-0 left-0";
-
-const cameraViewfinderOverlayClasses = "absolute top-0 left-0 z-10";
-
 const CameraViewfinder = () => {
   const viewfinderRef = useRef(null);
   const overlayRef = useRef(null);
-  const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [visibleImage, setVisibleImage] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [fallback, setFallback] = useState(false);
+  const [showExtractedText, setShowExtractedText] = useState(false);
   const [extractedText, setExtractedText] = useState("");
   const resizeOverlayRef = useRef(null);
 
-  const fetcher = useFetcher();
-  console.log(capturedImage);
   useEffect(() => {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
       console.error("getUserMedia is not supported");
@@ -84,14 +68,6 @@ const CameraViewfinder = () => {
       });
   }, []);
 
-  // add a set timeout in a useeffect to call extract text every 2 seconds
-  // useEffect(() => {
-  //   const interval = setInterval(async () => {
-  //     captureImage();
-  //   }, 2000);
-  //   return () => clearInterval(interval);
-  // }, []);
-
   useEffect(() => {
     const viewfinderElement = viewfinderRef.current;
     const overlayElement = overlayRef.current;
@@ -113,7 +89,6 @@ const CameraViewfinder = () => {
   }, []);
 
   const captureImage = async (show: boolean) => {
-    console.log("capturing image");
     const viewfinderElement = viewfinderRef.current;
 
     // Create a canvas element
@@ -128,34 +103,18 @@ const CameraViewfinder = () => {
     // Convert the canvas image to a data URL
     const dataUrl = canvas.toDataURL("image/png");
 
-    setCapturedImage(dataUrl);
-
-    const fileNameWithDate = `test/img-${Date.now()}.png`;
-    // const text = await extractText(dataUrl);
-    // setExtractedText(text);
     if (show) {
+      setExtractedText("Extracted text loading...");
       setVisibleImage(dataUrl);
-      // try {
-      //   setLoading(true);
-      //   const imageUrl = await fetcher.submit(
-      //     { imageData: dataUrl, fileName: fileNameWithDate },
-      //     { method: "post" }
-      //   );
-
-      //   setLoading(false);
-      // } catch (error) {
-      //   console.log(error);
-      //   setLoading(false);
-      // }
+      const Tesseract = await import("tesseract.js");
+      console.log(Tesseract);
+      const extracted = await extractText(dataUrl, Tesseract.default);
+      setExtractedText(extracted);
     }
   };
 
-  const imageRef = useRef(null);
-
-  const extractText = async (dataUrl: string) => {
-    const imageElement = imageRef.current;
-
-    // Load the image and perform OCR
+  const extractText = async (dataUrl: string, Tesseract: any) => {
+    console.log("extracting text");
     const {
       data: { text },
     } = await Tesseract.recognize(dataUrl);
@@ -163,22 +122,12 @@ const CameraViewfinder = () => {
     return text;
   };
 
-  const reloadSrc = (e) => {
-    console.log("reloading", e);
-    if (fallback) {
-      e.target.src = "";
-    } else {
-      e.target.src = capturedImage;
-      setFallback(true);
-    }
-  };
-
   return (
     <>
-      <div className={cameraViewfinderClasses}>
+      <div className="relative flex h-[500px]">
         <video
           ref={viewfinderRef}
-          className={cameraViewfinderVideoClasses}
+          className="absolute left-0 top-0"
           autoPlay
           playsInline
           muted
@@ -186,15 +135,11 @@ const CameraViewfinder = () => {
             resizeOverlayRef.current();
           }}
         />
-        {/* add some nice big text stating the extractedText with a highlighted background */}
-        {extractedText && (
-          <span className="z-10 text-2xl">{extractedText}</span>
-        )}
         <svg
           width="0"
           height="0"
           ref={overlayRef}
-          className={cameraViewfinderOverlayClasses}
+          className="absolute left-0 top-0 z-10"
         >
           <rect
             x="5%"
@@ -222,19 +167,26 @@ const CameraViewfinder = () => {
         )}
       </div>
 
-      <div className="flex justify-center">
-        <span>{extractedText}</span>
-      </div>
-
       {visibleImage && (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="m-4 w-full rounded-lg bg-white p-8 sm:m-8 sm:w-auto sm:p-16">
+          <div className="relative m-4 w-full rounded-lg bg-white p-8 sm:m-8 sm:w-auto sm:p-16">
             <img
               className="camera-viewfinder__image mb-8"
               src={visibleImage}
               alt="Captured"
-              onError={reloadSrc}
             />
+            {showExtractedText && (
+              <div className="absolute left-0 top-0 bg-white">
+                <span>{extractedText}</span>
+              </div>
+            )}
+            <div className="flex justify-center">
+              {/* medium text centered with tailwind */}
+              <p className="text-md">
+                Check the image quality - does it look blurry? If so please
+                press close and take another photo
+              </p>
+            </div>
             <div className="flex justify-between">
               <button
                 className="rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700"
@@ -242,8 +194,11 @@ const CameraViewfinder = () => {
               >
                 Close
               </button>
-              <button className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
-                Accept
+              <button
+                className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
+                onClick={() => setShowExtractedText(!showExtractedText)}
+              >
+                Toggle Extracted Text
               </button>
             </div>
           </div>
