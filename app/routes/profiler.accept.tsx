@@ -175,13 +175,13 @@ const CameraViewfinder = () => {
               src={visibleImage}
               alt="Captured"
             />
-            {showExtractedText && (
-              <div className="absolute left-0 top-0 bg-white text-xs">
-                <span>{extractedText}</span>
-              </div>
-            )}
             <div className="flex justify-center">
               {/* medium text centered with tailwind */}
+              {showExtractedText && (
+                <div className="left-0 top-0 bg-white text-xs">
+                  <span>{extractedText}</span>
+                </div>
+              )}
               <p className="text-md">
                 Check the image quality - does it look blurry? If so please
                 press close and take another photo
