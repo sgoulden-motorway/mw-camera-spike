@@ -4,12 +4,6 @@ import { LoaderArgs, json, redirect } from "@remix-run/node";
 import { useFetcher } from "@remix-run/react";
 const bucketName = "images-doc-recognition";
 
-//write a function that takes a value and a new value and makes an exponentially smoothed average
-const smooth = (value, newValue) => {
-  const s = 0.5;
-  return newValue + s * (value - newValue);
-};
-
 export async function action({ request }: LoaderArgs) {
   const { Storage } = require("@google-cloud/storage");
   console.log("fs");
@@ -241,9 +235,8 @@ const CameraViewfinder = () => {
           <button
             className="fixed bottom-0 z-50 mt-8 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
             onClick={() => captureImage(true)}
-            disabled={!!error}
           >
-            {error || "Capture"}
+            "Capture"
           </button>
         )}
       </div>
