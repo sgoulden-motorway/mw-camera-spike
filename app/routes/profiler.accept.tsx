@@ -44,7 +44,7 @@ const CameraViewfinder = () => {
   const [started, setStarted] = useState(false);
   const [extractedText, setExtractedText] = useState("");
   const [sharpness, setSharpness] = useState(-1);
-  const [shakiness, setShakiness] = useState(null);
+  const [shakiness, setShakiness] = useState(-1);
   const resizeOverlayRef = useRef(null);
 
   useEffect(() => {
@@ -169,7 +169,11 @@ const CameraViewfinder = () => {
       alpha = event.rotationRate.alpha + s * (alpha - event.rotationRate.alpha);
       beta = event.rotationRate.beta + s * (beta - event.rotationRate.beta);
       gamma = event.rotationRate.gamma + s * (gamma - event.rotationRate.gamma);
-      console.log(alpha, beta, gamma);
+      // console.log(alpha, beta, gamma);
+      // take an average of the 3
+      const shakiness =
+        (Math.abs(alpha) + Math.abs(beta) + Math.abs(gamma)) / 3;
+      setShakiness(shakiness);
     };
     // Checking for Device Motion Event support
     if (typeof DeviceMotionEvent.requestPermission === "function") {
@@ -233,12 +237,21 @@ const CameraViewfinder = () => {
           </button>
         )}
         {!visibleImage && (
-          <button
-            className="fixed bottom-0 z-50 mt-8 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
-            onClick={() => captureImage(true)}
-          >
-            "Capture"
-          </button>
+          <div className="fixed bottom-0 z-50 flex">
+            <button
+              className="mt-8 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
+              onClick={() => captureImage(true)}
+            >
+              "Capture"
+            </button>
+            <span
+              className={`bg-white text-xs ${
+                shakiness > 1 ? "text-red-500" : "text-green-500"
+              }`}
+            >
+              <p>Shakiness: {shakiness}</p>
+            </span>
+          </div>
         )}
       </div>
 
