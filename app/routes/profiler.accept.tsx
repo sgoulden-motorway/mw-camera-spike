@@ -41,6 +41,7 @@ const CameraViewfinder = () => {
   const overlayRef = useRef(null);
   const [visibleImage, setVisibleImage] = useState<string | null>(null);
   const [showExtractedText, setShowExtractedText] = useState(false);
+  const [started, setStarted] = useState(false);
   const [extractedText, setExtractedText] = useState("");
   const [sharpness, setSharpness] = useState(-1);
   const resizeOverlayRef = useRef(null);
@@ -88,34 +89,9 @@ const CameraViewfinder = () => {
       console.log(event.acceleration);
     };
 
-    window.addEventListener("devicemotion", handleMotion);
-
-    // Checking for Device Motion Event support
-    if (typeof DeviceMotionEvent.requestPermission === "function") {
-      DeviceMotionEvent.requestPermission()
-        .then((permissionState: string) => {
-          if (permissionState === "granted") {
-            window.addEventListener("devicemotion", (event) => {
-              // Handle device motion event here
-              console.log(event);
-            });
-          } else {
-            console.error("Device Motion permission not granted");
-          }
-        })
-        .catch(console.error);
-    } else {
-      // Non iOS 13+ devices
-      window.addEventListener("devicemotion", (event) => {
-        // Handle device motion event here
-        console.log(event);
-      });
-    }
-
     return () => {
       // Clean up the event listener on component unmount
       window.removeEventListener("resize", resizeOverlay);
-      window.removeEventListener("devicemotion", handleMotion);
     };
   }, []);
 
@@ -181,12 +157,37 @@ const CameraViewfinder = () => {
     }
   };
 
+  const requestPermissions = async () => {
+    // Checking for Device Motion Event support
+    if (typeof DeviceMotionEvent.requestPermission === "function") {
+      DeviceMotionEvent.requestPermission()
+        .then((permissionState: string) => {
+          if (permissionState === "granted") {
+            window.addEventListener("devicemotion", (event) => {
+              // Handle device motion event here
+              console.log(event);
+            });
+          } else {
+            console.error("Device Motion permission not granted");
+          }
+        })
+        .catch(console.error);
+    } else {
+      // Non iOS 13+ devices
+      window.addEventListener("devicemotion", (event) => {
+        // Handle device motion event here
+        console.log(event);
+      });
+    }
+    setStarted(true);
+  };
+
   return (
     <>
       <div className="relative flex h-[500px]">
         <video
           ref={viewfinderRef}
-          className="absolute left-0 top-0"
+          className={`absolute left-0 top-0 ${started ? "" : "invisible"}`}
           autoPlay
           playsInline
           muted
@@ -198,7 +199,7 @@ const CameraViewfinder = () => {
           width="0"
           height="0"
           ref={overlayRef}
-          className="absolute left-0 top-0 z-10"
+          className={`absolute left-0 top-0 z-10 ${started ? "" : "invisible"}`}
         >
           <rect
             x="5%"
@@ -216,6 +217,14 @@ const CameraViewfinder = () => {
 
       <div className="flex flex-col justify-around">
         {/* create a nice button using tailwind that calls onClick={() => captureImage(true)} */}
+        {!started && (
+          <button
+            className="absolute left-[50%] top-[50%] z-50 mt-8 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
+            onClick={() => requestPermissions()}
+          >
+            Start
+          </button>
+        )}
         {!visibleImage && (
           <button
             className="fixed bottom-0 z-50 mt-8 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
