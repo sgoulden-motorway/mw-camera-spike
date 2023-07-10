@@ -90,6 +90,28 @@ const CameraViewfinder = () => {
 
     window.addEventListener("devicemotion", handleMotion);
 
+    // Checking for Device Motion Event support
+    if (typeof DeviceMotionEvent.requestPermission === "function") {
+      DeviceMotionEvent.requestPermission()
+        .then((permissionState: string) => {
+          if (permissionState === "granted") {
+            window.addEventListener("devicemotion", (event) => {
+              // Handle device motion event here
+              console.log(event);
+            });
+          } else {
+            console.error("Device Motion permission not granted");
+          }
+        })
+        .catch(console.error);
+    } else {
+      // Non iOS 13+ devices
+      window.addEventListener("devicemotion", (event) => {
+        // Handle device motion event here
+        console.log(event);
+      });
+    }
+
     return () => {
       // Clean up the event listener on component unmount
       window.removeEventListener("resize", resizeOverlay);
