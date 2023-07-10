@@ -42,6 +42,7 @@ const CameraViewfinder = () => {
   const [visibleImage, setVisibleImage] = useState<string | null>(null);
   const [showExtractedText, setShowExtractedText] = useState(false);
   const [extractedText, setExtractedText] = useState("");
+  const [sharpness, setSharpness] = useState(-1);
   const resizeOverlayRef = useRef(null);
 
   useEffect(() => {
@@ -82,9 +83,17 @@ const CameraViewfinder = () => {
     resizeOverlayRef.current = resizeOverlay;
     window.addEventListener("resize", resizeOverlay);
 
+    const handleMotion = (event: any) => {
+      console.log(event);
+      console.log(event.acceleration);
+    };
+
+    window.addEventListener("devicemotion", handleMotion);
+
     return () => {
       // Clean up the event listener on component unmount
       window.removeEventListener("resize", resizeOverlay);
+      window.removeEventListener("devicemotion", handleMotion);
     };
   }, []);
 
@@ -108,7 +117,11 @@ const CameraViewfinder = () => {
       setVisibleImage(dataUrl);
       const Tesseract = await import("tesseract.js");
       console.log(Tesseract);
-      const extracted = await extractText(dataUrl, Tesseract.default);
+      const [extracted, sharpness] = await Promise.all([
+        extractText(dataUrl, Tesseract.default),
+        checkSharpness(dataUrl, Tesseract.default),
+      ]);
+      setSharpness(sharpness);
       setExtractedText(extracted);
     }
   };
@@ -120,6 +133,30 @@ const CameraViewfinder = () => {
     } = await Tesseract.recognize(dataUrl);
 
     return text;
+  };
+
+  const checkSharpness = async (dataUrl: string, Tesseract: any) => {
+    console.log("checking sharpness");
+
+    // create a base64 encoded image from the dataUrl
+    const base64EncodedImageString = dataUrl.split(",")[1];
+    try {
+      const response = await fetch("http://localhost:9150/check-sharpness", {
+        // add in a body of "buffer": base64EncodedImageString
+        // add in a header of "Content-Type": "application/json"
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ buffer: base64EncodedImageString }),
+        method: "POST",
+      });
+
+      const json = await response.json();
+
+      return json.sharpness;
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -175,18 +212,34 @@ const CameraViewfinder = () => {
               src={visibleImage}
               alt="Captured"
             />
-            <div className="flex justify-center">
+            <div>
+              {/* medium text centered with tailwind */}
+              {sharpness && (
+                <div className="bg-white text-xs">
+                  <span>
+                    sharpness score:{" "}
+                    {sharpness === -1 ? "Loading..." : sharpness}
+                  </span>
+                </div>
+              )}
               {/* medium text centered with tailwind */}
               {showExtractedText && (
                 <div className="left-0 top-0 bg-white text-xs">
-                  <span>{extractedText}</span>
+                  <span>
+                    Extracted text:
+                    <br /> {extractedText}
+                  </span>
                 </div>
               )}
             </div>
             <div className="flex justify-between">
               <button
                 className="rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700"
-                onClick={() => setVisibleImage(null)}
+                onClick={() => {
+                  setShowExtractedText(false);
+                  setSharpness(-1);
+                  setVisibleImage(null);
+                }}
               >
                 Close
               </button>
