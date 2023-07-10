@@ -4,6 +4,12 @@ import { LoaderArgs, json, redirect } from "@remix-run/node";
 import { useFetcher } from "@remix-run/react";
 const bucketName = "images-doc-recognition";
 
+//write a function that takes a value and a new value and makes an exponentially smoothed average
+const smooth = (value, newValue) => {
+  const s = 0.5;
+  return newValue + s * (value - newValue);
+};
+
 export async function action({ request }: LoaderArgs) {
   const { Storage } = require("@google-cloud/storage");
   console.log("fs");
@@ -44,6 +50,7 @@ const CameraViewfinder = () => {
   const [started, setStarted] = useState(false);
   const [extractedText, setExtractedText] = useState("");
   const [sharpness, setSharpness] = useState(-1);
+  const [shakiness, setShakiness] = useState(null);
   const resizeOverlayRef = useRef(null);
 
   useEffect(() => {
@@ -158,15 +165,23 @@ const CameraViewfinder = () => {
   };
 
   const requestPermissions = async () => {
+    let alpha = 0,
+      beta = 0,
+      gamma = 0;
+    const s = 0.25;
+    const deviceMotionHandler = (event) => {
+      // Obtain acceleration including gravity from event
+      alpha = event.alpha + s * (alpha - event.rotationRate.alpha);
+      beta = event.beta + s * (beta - event.rotationRate.beta);
+      gamma = event.gamma + s * (gamma - event.rotationRate.gamma);
+      console.log(alpha, beta, gamma);
+    };
     // Checking for Device Motion Event support
     if (typeof DeviceMotionEvent.requestPermission === "function") {
       DeviceMotionEvent.requestPermission()
         .then((permissionState: string) => {
           if (permissionState === "granted") {
-            window.addEventListener("devicemotion", (event) => {
-              // Handle device motion event here
-              console.log(event);
-            });
+            window.addEventListener("devicemotion", deviceMotionHandler);
           } else {
             console.error("Device Motion permission not granted");
           }
@@ -174,10 +189,7 @@ const CameraViewfinder = () => {
         .catch(console.error);
     } else {
       // Non iOS 13+ devices
-      window.addEventListener("devicemotion", (event) => {
-        // Handle device motion event here
-        console.log(event);
-      });
+      window.addEventListener("devicemotion", deviceMotionHandler);
     }
     setStarted(true);
   };
@@ -229,8 +241,9 @@ const CameraViewfinder = () => {
           <button
             className="fixed bottom-0 z-50 mt-8 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
             onClick={() => captureImage(true)}
+            disabled={!!error}
           >
-            Capture
+            {error || "Capture"}
           </button>
         )}
       </div>
