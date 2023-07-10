@@ -166,9 +166,9 @@ const CameraViewfinder = () => {
     const deviceMotionHandler = (event) => {
       console.log(event.rotationRate);
       // Obtain acceleration including gravity from event
-      alpha = event.alpha + s * (alpha - event.rotationRate.alpha);
-      beta = event.beta + s * (beta - event.rotationRate.beta);
-      gamma = event.gamma + s * (gamma - event.rotationRate.gamma);
+      alpha = event.rotationRate.alpha + s * (alpha - event.rotationRate.alpha);
+      beta = event.rotationRate.beta + s * (beta - event.rotationRate.beta);
+      gamma = event.rotationRate.gamma + s * (gamma - event.rotationRate.gamma);
       console.log(alpha, beta, gamma);
     };
     // Checking for Device Motion Event support
